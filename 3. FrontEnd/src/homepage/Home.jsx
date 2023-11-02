@@ -2,8 +2,7 @@ import React from "react";
 import { Outlet, useNavigate, useLoaderData, } from "react-router-dom";
 import { Layout,  Button, Space, Input, Row, Col, Image } from "antd";
 import Logo from "../assets/Logo.webp";
-// import { Outlet } from "react-router-dom";
-// import Footers from "./footer";
+import Footers from "./footer";
 
 const { Header} = Layout;
 
@@ -108,6 +107,9 @@ const homepage = () => {
         <div id="detail">
 
           <Outlet/>
+        </div>
+        <div>
+          <Footers/>
         </div>
       </Layout>
     </div>

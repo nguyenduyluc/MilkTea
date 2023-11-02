@@ -20,7 +20,9 @@ function Content() {
     const data = axios
       .get(productApi)
       .then((res) => {
-        setData(res.data);
+        console.log(res);
+        setData(res.data.content);
+        
       })
       .catch((err) => console.log(err));
 
@@ -61,9 +63,9 @@ function Content() {
           <Carousel ref={carouselRef} slidesToShow={4} dots={false}>
             {data.map((item) => (
               <div>
-                <Image className="image-css" src={item.avatar} />
+                <Image className="image-css" src={item.imageUrl} />
                 <h3 className="h3-css" align="center">
-                  {item.productName}
+                  {item.name}
                 </h3>
               </div>
             ))}

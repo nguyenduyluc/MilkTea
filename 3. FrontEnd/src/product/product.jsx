@@ -1,92 +1,86 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 // import { useEffect, useState } from "react";
-import { Pagination } from "antd";
-import { Card, List } from "antd";
-import ReactPaginate from 'react-paginate';
+import { Button, Col, Pagination, Row } from "antd";
+import { Card, List, Image } from "antd";
+import ReactPaginate from "react-paginate";
 // import {envApi} from './api'
+import { productApi } from "./api";
 // axios call api
-// import axios from 'axios';
+import axios from "axios";
 function product() {
-  const App = () => <Pagination defaultCurrent={1} total={5} />;
+  const [current, setCurrent] = useState(1);
+  const [data, setData] = useState([]);
+  const pageSize = 8;
+  useEffect(() => {
+    callapi();
+  }, []);
 
-  const data1 = [
-    {
-      title: "Title 1",
-    },
-    {
-      title: "Title 2",
-    },
-    {
-      title: "Title 3",
-    },
-    {
-      title: "Title 4",
-    },
-    {
-      title: "Title 5",
-    },
-    {
-      title: "Title 6",
-    },
-    {
-      title: "Title 7",
-    },
-    {
-      title: "Title 8",
-    },
-    {
-      title: "Title 9",
-    },
-    {
-      title: "Title 10",
-    },
-    {
-      title: "Title 10",
-    },
-    {
-      title: "Title 10",
-    },
-  ];
-  // trang hiện tại
-  //   const currentPage = this.state.currentPage;
-  //    tin tức mỗi trang
-  //  const newPerPage = this.state.newPerPage;
-  // vị trí tin tức đầu tiên của trang hiện tại trong list dữ liệu
-  // const indexOfLastNew = currentPage * newPerPage;
-  //  dữ liệu ban đầu lấy ra 1 mảng dữ liệu cho trang mới
-  // const indexOfFirstNew = indexOfLastNew - newPerPage
+  const callapi = () => {
+    const data = axios
+      .get(productApi)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data.content);
+      })
+      .catch((err) => console.log(err));
 
-  // const currentTodos = newList.slice(indexOfFirstNew, indexOfLastNew)
+    return () => data;
+  };
 
-  const handlePageClick = () => {
+  // Hàm này sẽ được gọi khi người dùng thay đổi trang
+  const handlePageChange = (pageNumber) => {
+    setCurrent(pageNumber);
+  };
 
-  }
   return (
-    <>
-      <List
-        grid={{
-          gutter: 6,
-          column: 4,
-        }}
-        dataSource={data1}
+    <div>
+     
+      <Row>
+        
+        <Col span={20} offset={2}>
+        <List
+        itemLayout="horizontal"
+        dataSource={data.slice((current - 1) * pageSize, current * pageSize)}
+        grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 4 }}
         renderItem={(item) => (
-          <List.Item>
-            <Card title={item.title}>Card content</Card>
-          </List.Item>
+          <Row style={{paddingBottom:'10%'}}>
+            <Col span={20}>
+            <Row justify="center">
+              <Image className="image-css" src={item.imageUrl} />
+              </Row>
+            </Col>
+            <Col span={20}>
+            <Row justify="center">
+              <h4 className="h3-css" align="center">
+                {item.name}
+              </h4>
+              </Row>
+            </Col>
+            <Col span={20}>
+            <Row justify="center">
+              <h5>Giá: {item.priceM}</h5>
+              </Row>
+            </Col>
+          
+          </Row>
+          
         )}
       />
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        // so luong trang
-        pageCount={10}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
-    </>
+      <Row justify="center">
+        <Pagination
+          current={current}
+          onChange={handlePageChange}
+          pageSize={pageSize}
+          total={data.length}
+        />
+      </Row>
+        
+        </Col>
+
+
+      </Row>
+      
+    </div>
   );
 }
-
 export default product;
