@@ -7,7 +7,6 @@ import { productApi } from "../product/api";
 import axios from "axios";
 import { Button, Row, Col, Image, Carousel, List, Avatar } from "antd";
 
-  
 function Content() {
   // data list product
   const [data, setData] = useState([]);
@@ -22,7 +21,6 @@ function Content() {
       .then((res) => {
         console.log(res);
         setData(res.data.content);
-        
       })
       .catch((err) => console.log(err));
 
@@ -85,14 +83,67 @@ function Content() {
               </Col>
             </Row>
           </div>
+
           <div className="image-css1">
             <Image src="https://bizweb.dktcdn.net/100/477/681/themes/895448/assets/slider_1.jpg?1695629614469" />
           </div>
+
           <div>
-            <Row  className="row-css1" justify="center"   >
+            <h3 align="center">MENU HÔM NAY</h3>
+            <Row>
+              <Col span={8}></Col>
+              <Col span={2}>
+                <Button className="botton-product">Trà sữa</Button>
+              </Col>
+              <Col span={2}>
+                <Button className="botton-product">Trà sữa</Button>
+              </Col>
+              <Col span={2}>
+                <Button className="botton-product">Trà sữa</Button>
+              </Col>
+              <Col span={2}>
+                <Button className="botton-product">Trà sữa</Button>
+              </Col>
+            </Row>
+            <div>
+              <Row>
+
+                <Col   span={20} offset={2}>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={data}
+                  renderItem={(item, index) => (
+                    <Row>
+                      <Col span={20}>
+                        
+                          <Image className="image-css" src={item.imageUrl} />
+                       
+                      </Col>
+                      <Col span={20}>
+                       
+                          <h4 className="h3-css" align="center">
+                            {item.name}
+                          </h4>
+                        
+                      </Col>
+                      <Col span={20}>
+                        
+                          <h5>Giá: {item.priceM}</h5>
+                        
+                      </Col>
+                    </Row>
+                  )}
+                />
+                </Col>
+                
+              </Row>
+            </div>
+          </div>
+          <div>
+            <Row className="row-css1" justify="center">
               <Col span={10} className="Col_color">
                 <DemoBox value={100}>
-                  <div className="css_div"  align="middle">
+                  <div className="css_div" align="middle">
                     <h3>THỜI GIAN MỞ CỬA</h3>
                     <p>
                       “Winggo" - Một lời ngỏ mộc mạc để mình ngồi lại bên nhau

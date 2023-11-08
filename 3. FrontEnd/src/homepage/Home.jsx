@@ -1,12 +1,12 @@
 import React from "react";
 import { Outlet, useNavigate, useLoaderData, } from "react-router-dom";
-import { Layout,  Button, Space, Input, Row, Col, Image } from "antd";
+import { Layout,  Button, Space, Input, Row, Col, Image,} from "antd";
 import Logo from "../assets/Logo.webp";
 import Footers from "./footer";
 
 const { Header} = Layout;
-
-
+const { Search } = Input;
+const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 function Homepage() {
   const items = [
@@ -68,12 +68,18 @@ const homepage = () => {
             </Col>
             <Col span={8}>
               <Col span={8}>
-                <Input placeholder="Tìm kiếm sản phẩm" />
+              <Search
+      placeholder="Tìm kiếm sản phẩm"
+      onSearch={onSearch}
+      style={{
+        width: 200,
+      }}
+    />
               </Col>
             </Col>
             <Col span={2} />
             <Col span={2}>
-              <h5>Giỏ hàng</h5>
+              <h6>Giỏ hàng</h6>
             </Col>
             <Col span={2}>
               {/* <Dropdown menu={menuProps}> */}
@@ -90,8 +96,8 @@ const homepage = () => {
         <div className="home-page">
           <Row  >
           <Col span={2} />
-          <Col span={2} onClick={homepage}>
-            <h5>Home</h5>
+          <Col span={2} onClick={homepage} >
+            <h5 >Home</h5>
           </Col>
           <Col span={2} onClick={productOnclick}>
             <h5>Sản phẩm</h5>
