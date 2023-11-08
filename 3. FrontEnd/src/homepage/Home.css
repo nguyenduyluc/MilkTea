@@ -103,15 +103,3 @@ height: 32rem;
 .div-css1 {
   padding-top: 2em;
 }
-a{
-  text-decoration: none;
-}
-a:hover{
-  background-color: white;
-}
-.item1
-{
-  display: flex;
-  justify-content:space-between;
-  padding: 10px;
-}
