@@ -6,6 +6,7 @@ import { RightOutlined, LeftOutlined, UserOutlined } from "@ant-design/icons";
 import { productApi } from "../product/api";
 import axios from "axios";
 import { Button, Row, Col, Image, Carousel, List, Avatar } from "antd";
+import { Link } from "react-router-dom";
 
 function Content() {
   // data list product
@@ -43,7 +44,9 @@ function Content() {
   const DemoBox = (props) => (
     <p className={`height-${props.value}`}>{props.children}</p>
   );
-
+  let handleScrollUp = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+}
   return (
     <>
       <div className="contentStyle">
@@ -63,7 +66,10 @@ function Content() {
               <div>
                 <Image className="image-css" src={item.imageUrl} />
                 <h3 className="h3-css" align="center">
+                <Link to={`/ProductDetail/${item.id}`} onClick={handleScrollUp}>
                   {item.name}
+                  </Link>
+
                 </h3>
               </div>
             ))}
@@ -83,7 +89,6 @@ function Content() {
               </Col>
             </Row>
           </div>
-
           <div className="image-css1">
             <Image src="https://bizweb.dktcdn.net/100/477/681/themes/895448/assets/slider_1.jpg?1695629614469" />
           </div>
@@ -115,27 +120,27 @@ function Content() {
                   renderItem={(item, index) => (
                     <Row>
                       <Col span={20}>
-                        
+
                           <Image className="image-css" src={item.imageUrl} />
-                       
+
                       </Col>
                       <Col span={20}>
-                       
+
                           <h4 className="h3-css" align="center">
                             {item.name}
                           </h4>
-                        
+
                       </Col>
                       <Col span={20}>
-                        
+
                           <h5>Giá: {item.priceM}</h5>
-                        
+
                       </Col>
                     </Row>
                   )}
                 />
                 </Col>
-                
+
               </Row>
             </div>
           </div>

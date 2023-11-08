@@ -1,19 +1,24 @@
 import React from "react";
-import { Outlet, useNavigate, useLoaderData, } from "react-router-dom";
-import { Layout,  Button, Space, Input, Row, Col, Image,} from "antd";
+import { Outlet, useNavigate, useLoaderData, Link, } from "react-router-dom";
+import { Layout, Button, Space, Input, Row, Col, Image, Flex } from "antd";
 import Logo from "../assets/Logo.webp";
 import Footers from "./footer";
+import {  ShoppingTwoTone, UserOutlined } from "@ant-design/icons";
+import { RiUserSettingsLine } from "react-icons/ri";
+// import Cart from "../Pages/Cart";
 
 const { Header} = Layout;
 const { Search } = Input;
 const onSearch = (value, _e, info) => console.log(info?.source, value);
+
+
+
 
 function Homepage() {
   const items = [
     {
       label: "Đăng nhập",
       key: "1",
-      
     },
     {
       label: "Đăng ký",
@@ -31,22 +36,24 @@ function Homepage() {
   const navigate = useNavigate();
 
 
-const loginclick = () => {
-  navigate('/login');
+  const loginclick = () => {
+    navigate('/login');
+  }
+
+  const productOnclick = () => {
+    navigate('/product');
 
 
-}
-
-const productOnclick = () => {
-  navigate('/product');
-
-
-}
-const homepage = () => {
-  navigate('/');
+  }
+  //Tiến làm
+  const cart = () => {
+    navigate('/cart');
 
 
-}
+  }
+  const homepage = () => {
+    navigate('/');
+  }
 
   const menuProps = {
     items,
@@ -77,45 +84,49 @@ const homepage = () => {
     />
               </Col>
             </Col>
-            <Col span={2} />
-            <Col span={2}>
-              <h6>Giỏ hàng</h6>
-            </Col>
+            {/* -------------------- Tiến làm-------------------- */}
+            <Flex wrap="wrap" gap="small">
+              <h3><Link to={'/admin'}><RiUserSettingsLine /></Link></h3>
+
+
+              <h2><Link to={'/cart'}><ShoppingTwoTone /> </Link></h2>
+
+            </Flex>
             <Col span={2}>
               {/* <Dropdown menu={menuProps}> */}
-                <Button onClick={loginclick} >
-                  <Space>
-                    Login
-                    {/* <DownOutlined /> */}
-                  </Space>
-                </Button>
+              <Button onClick={loginclick} >
+                <Space>
+                  Login
+                  {/* <DownOutlined /> */}
+                </Space>
+              </Button>
               {/* </Dropdown> */}
             </Col>
           </Row>
         </Header>
         <div className="home-page">
           <Row  >
-          <Col span={2} />
-          <Col span={2} onClick={homepage} >
-            <h5 >Home</h5>
-          </Col>
-          <Col span={2} onClick={productOnclick}>
-            <h5>Sản phẩm</h5>
-          </Col>
-          <Col span={2}>
-            <h5>Ưu đãi</h5>
-          </Col>
-          <Col span={2}>
-            <h5>Khóa học</h5>
-          </Col>
-        </Row>
+            <Col span={2} />
+            <Col span={2} onClick={homepage}>
+              <h5 style={{ cursor: "pointer" }}>Home</h5>
+            </Col>
+            <Col span={2} onClick={productOnclick}>
+              <h5 style={{ cursor: "pointer" }}>Sản phẩm</h5>
+            </Col>
+            <Col span={2}>
+              <h5>Ưu đãi</h5>
+            </Col>
+            <Col span={2}>
+              <h5>Khóa học</h5>
+            </Col>
+          </Row>
         </div>
         <div id="detail">
 
-          <Outlet/>
+          <Outlet />
         </div>
         <div>
-          <Footers/>
+          <Footers />
         </div>
       </Layout>
     </div>
