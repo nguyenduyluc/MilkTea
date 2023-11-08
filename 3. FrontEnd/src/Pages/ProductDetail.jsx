@@ -14,7 +14,7 @@ import { storeRedux } from "../Redux/StoreRedux/Store";
 import { Link, useParams } from "react-router-dom";
 import { actionProductByIDAPI } from "../Redux/Action/ProductAction";
 import axios from "axios";
-import { Rate } from "antd";
+import { Rate,message } from "antd";
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
 import { FaRegSmileWink, FaStar } from "react-icons/fa";
 import Button from "antd-button-color";
@@ -33,6 +33,7 @@ function ProductDetail() {
   let [productReview, setProductReview] = useState([]);
   let [listProductNotPage,setListProductNotPage]=useState([]);
   let [textReview, setTextReview] = useState(null);
+  let [messageApi, contextHolder] = message.useMessage();
 
   let paramid = useParams();
   let productid = paramid.productid;
@@ -64,6 +65,7 @@ function ProductDetail() {
         })
         .then((res) => {
           setListProductNotPage(res.data.content);
+          
         })
         .catch((error) => {
           
@@ -143,6 +145,11 @@ let addNewReview=()=>{
   dispatch(actionAddProductReviewAPI(itemProductReview));
   setRatingz("");
   setTextReview("");
+  messageApi.open({
+    type: 'success',
+    content: 'Cảm ơn bạn đã đánh giá cho sản phẩm',
+
+  });
 }
 
  //----------------End Item productReview--------------------
@@ -202,7 +209,7 @@ let addNewReview=()=>{
 
 
   return (
-    <>
+    <>{contextHolder}
       <section className="pt-5 trasua">
         <Container>
           <Row>

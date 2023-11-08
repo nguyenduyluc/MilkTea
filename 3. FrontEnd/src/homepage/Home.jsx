@@ -3,8 +3,9 @@ import { Outlet, useNavigate, useLoaderData, Link, } from "react-router-dom";
 import { Layout, Button, Space, Input, Row, Col, Image, Flex } from "antd";
 import Logo from "../assets/Logo.webp";
 import Footers from "./footer";
-import {  ShoppingTwoTone, UserOutlined } from "@ant-design/icons";
+import { ShoppingTwoTone, UserOutlined } from "@ant-design/icons";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { IoIosLogOut } from "react-icons/io";
 // import Cart from "../Pages/Cart";
 
 const { Header } = Layout;
@@ -39,6 +40,15 @@ function Homepage() {
 
 
   }
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("id");
+    navigate('/login');
+
+
+
+  }
 
   const productOnclick = () => {
     navigate('/product');
@@ -60,7 +70,8 @@ function Homepage() {
   const menuProps = {
     items,
   };
-
+  const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
 
 
 
@@ -82,25 +93,34 @@ function Homepage() {
             </Col>
             {/* -------------------- Tiến làm-------------------- */}
             <Flex wrap="wrap" gap="small">
-            <h3><Link to={'/admin'}><RiUserSettingsLine /></Link></h3>
-            
-            
-            <h2><Link to={'/cart'}><ShoppingTwoTone /> </Link></h2>
+              {role === 'ADMIN' && (
+                <h3><Link to={'/admin'}><RiUserSettingsLine /></Link></h3>
+              )}
+
+                
+              <h2><Link to={'/cart'}><ShoppingTwoTone /> </Link></h2>
 
             </Flex>
-              
-            
 
-          
+
+
+
             <Col span={2}>
               {/* <Dropdown menu={menuProps}> */}
-              <Button onClick={loginclick} >
-                <Space>
-                  Login
-                  {/* <DownOutlined /> */}
-                </Space>
-              </Button>
+              {id ? null : (
+                <Button onClick={loginclick} >
+                  <Space>
+                    Login
+                    {/* <DownOutlined /> */}
+                  </Space>
+                </Button>
+              )}
               {/* </Dropdown> */}
+            </Col>
+            <Col span={0.1}>
+              {id && (
+                <h2 onClick={logout} style={{ cursor: "pointer" }}><IoIosLogOut /></h2>
+              )}
             </Col>
           </Row>
         </Header>
