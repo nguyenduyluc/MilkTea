@@ -6,6 +6,7 @@ import { RightOutlined, LeftOutlined, UserOutlined } from "@ant-design/icons";
 import { productApi } from "../product/api";
 import axios from "axios";
 import { Button, Row, Col, Image, Carousel, List, Avatar } from "antd";
+import { Link } from "react-router-dom";
 
   
 function Content() {
@@ -20,7 +21,9 @@ function Content() {
     const data = axios
       .get(productApi)
       .then((res) => {
-        setData(res.data);
+        console.log(res);
+        setData(res.data.content);
+        
       })
       .catch((err) => console.log(err));
 
@@ -43,7 +46,9 @@ function Content() {
   const DemoBox = (props) => (
     <p className={`height-${props.value}`}>{props.children}</p>
   );
-
+  let handleScrollUp = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+}
   return (
     <>
       <div className="contentStyle">
@@ -61,9 +66,12 @@ function Content() {
           <Carousel ref={carouselRef} slidesToShow={4} dots={false}>
             {data.map((item) => (
               <div>
-                <Image className="image-css" src={item.avatar} />
+                <Image className="image-css" src={item.imageUrl} />
                 <h3 className="h3-css" align="center">
-                  {item.productName}
+                <Link to={`/ProductDetail/${item.id}`} onClick={handleScrollUp}>
+                  {item.name}
+                  </Link>
+                  
                 </h3>
               </div>
             ))}
