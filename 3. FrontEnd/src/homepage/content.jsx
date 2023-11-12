@@ -60,7 +60,7 @@ function Content() {
         </Carousel>
 
         <div className="div-css1">
-          <h1 align="center">Danh sách sản phẩm </h1>
+          <h1  align="center" style={{paddingBottom: "3%"}}>Danh sách sản phẩm </h1>
           <Carousel ref={carouselRef} slidesToShow={4} dots={false}>
             {data.map((item) => (
               <div>
@@ -94,11 +94,11 @@ function Content() {
           </div>
 
           <div>
-            <h3 align="center">MENU HÔM NAY</h3>
-            <Row>
+            <h3 align="center" className="space-top">MENU HÔM NAY</h3>
+            <Row  className="space-top">
               <Col span={8}></Col>
               <Col span={2}>
-                <Button className="botton-product">Trà sữa</Button>
+                <Button className="botton-product" >Trà sữa</Button>
               </Col>
               <Col span={2}>
                 <Button className="botton-product">Trà sữa</Button>
@@ -111,30 +111,31 @@ function Content() {
               </Col>
             </Row>
             <div>
-              <Row>
+              <Row className="space-top" justify="center">
 
                 <Col   span={20} offset={2}>
                 <List
+                grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 4 }}
                   itemLayout="horizontal"
                   dataSource={data}
                   renderItem={(item, index) => (
-                    <Row>
+                    <Row >
                       <Col span={20}>
 
                           <Image className="image-css" src={item.imageUrl} />
 
                       </Col>
                       <Col span={20}>
-
-                          <h4 className="h3-css" align="center">
-                            {item.name}
-                          </h4>
-
+                      <Link to={`/ProductDetail/${item.id}`} onClick={handleScrollUp}>
+                      <h4 align="center">
+                        {item.name}
+                      </h4>
+                    </Link>
                       </Col>
                       <Col span={20}>
-
-                          <h5>Giá: {item.priceM}</h5>
-
+                      <Row justify="center">
+                    <h5>Giá: {item.priceM.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</h5>
+                  </Row>
                       </Col>
                     </Row>
                   )}

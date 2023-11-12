@@ -50,6 +50,10 @@ function product() {
 //Phần có thể Bạn Thích trong Product Details
 let listProductAPI = useSelector(state => state.product.listProduct);
 
+useEffect(() => {
+  setData(listProductAPI);
+},[listProductAPI]);
+
 let dispatch = useDispatch();
 
 useEffect(() => {
@@ -79,7 +83,7 @@ useEffect(() => {
                 {/* -------------- Tiến làm ----------------------- */}
                   <Row justify="center">
                     <Link to={`/ProductDetail/${item.id}`} onClick={handleScrollUp}>
-                      <h4 className="h3-css" align="center">
+                      <h4 align="center">
                         {item.name}
                       </h4>
                     </Link>
@@ -96,7 +100,7 @@ useEffect(() => {
 
             )}
           />
-          <Row justify="center">
+          <Row justify="center" style={{paddingBottom: '3%'}}>
           <Pagination
               current={current}
               onChange={handlePageChange}

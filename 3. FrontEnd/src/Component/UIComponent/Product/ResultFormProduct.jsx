@@ -34,7 +34,7 @@ function ResultFormProduct(props) {
  
   const [shouldRefreshData, setShouldRefreshData] = useState(false);
   //----------End Declare ----------
-
+ 
   //useEffect
   useEffect(() => {
     

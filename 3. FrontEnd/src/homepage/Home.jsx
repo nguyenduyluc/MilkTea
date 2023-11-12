@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState }  from "react";
 import { Outlet, useNavigate, useLoaderData, Link, } from "react-router-dom";
 import { Layout, Button, Space, Input, Row, Col, Image, Flex } from "antd";
 import Logo from "../assets/Logo.webp";
 import Footers from "./footer";
-import {  ShoppingTwoTone, UserOutlined } from "@ant-design/icons";
+import { ShoppingTwoTone, UserOutlined } from "@ant-design/icons";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { IoIosLogOut } from "react-icons/io";
 // import Cart from "../Pages/Cart";
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { actionFetchListProductThunk } from "../Redux/Action/ProductAction";
 
 const { Header} = Layout;
 const { Search } = Input;
-const onSearch = (value, _e, info) => console.log(info?.source, value);
-
 
 
 
@@ -34,16 +36,41 @@ function Homepage() {
   // lấy dữ liệu vào đường dẫn chính
 
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  let searchProductList = (value) => {
+    axios
+      .get("http://localhost:8080/api/v1/products?page=0&size=5", {
+        params: {
+          search: value
+        },
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        dispatch(actionFetchListProductThunk(res.data.content));
+        // dispatch(setData(res.data.content));
+        navigate('/product')
+      })
+      .catch((error) => {
+        
+        console.error('Error fetching product list: ', error);
+      });
+  };
 
   const loginclick = () => {
     navigate('/login');
   }
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("id");
+    navigate('/login');
+  }
+
   const productOnclick = () => {
     navigate('/product');
-
-
   }
   //Tiến làm
   const cart = () => {
@@ -58,7 +85,9 @@ function Homepage() {
   const menuProps = {
     items,
   };
-
+  const id = localStorage.getItem("id");
+  const role = localStorage.getItem("role");
+  const userName = localStorage.getItem("user");
 
 
 
@@ -77,7 +106,7 @@ function Homepage() {
               <Col span={8}>
               <Search
       placeholder="Tìm kiếm sản phẩm"
-      onSearch={onSearch}
+      onSearch={searchProductList}
       style={{
         width: 200,
       }}
@@ -86,21 +115,29 @@ function Homepage() {
             </Col>
             {/* -------------------- Tiến làm-------------------- */}
             <Flex wrap="wrap" gap="small">
-              <h3><Link to={'/admin'}><RiUserSettingsLine /></Link></h3>
-
-
+              {role === 'ADMIN' && (
+                <h3><Link to={'/admin'}><RiUserSettingsLine /></Link></h3>
+              )}
               <h2><Link to={'/cart'}><ShoppingTwoTone /> </Link></h2>
 
             </Flex>
+
             <Col span={2}>
               {/* <Dropdown menu={menuProps}> */}
-              <Button onClick={loginclick} >
-                <Space>
-                  Login
-                  {/* <DownOutlined /> */}
-                </Space>
-              </Button>
+              {id ? userName : (
+                <Button onClick={loginclick} >
+                  <Space>
+                    Login
+                    {/* <DownOutlined /> */}
+                  </Space>
+                </Button>
+              )}
               {/* </Dropdown> */}
+            </Col>
+            <Col span={0.1}>
+              {id && (
+                <h2 onClick={logout} style={{ cursor: "pointer" }}><IoIosLogOut /></h2>
+              )}
             </Col>
           </Row>
         </Header>

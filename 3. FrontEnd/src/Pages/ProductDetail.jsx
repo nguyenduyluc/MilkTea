@@ -11,10 +11,10 @@ import TabPanel from '@mui/lab/TabPanel';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionAddToCart } from "../Redux/Action/AddToCartAction"
 import { storeRedux } from "../Redux/StoreRedux/Store";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { actionProductByIDAPI } from "../Redux/Action/ProductAction";
 import axios from "axios";
-import { Rate } from "antd";
+import { Rate,message } from "antd";
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
 import { FaRegSmileWink, FaStar } from "react-icons/fa";
 import Button from "antd-button-color";
@@ -33,9 +33,11 @@ function ProductDetail() {
   let [productReview, setProductReview] = useState([]);
   let [listProductNotPage,setListProductNotPage]=useState([]);
   let [textReview, setTextReview] = useState(null);
+  let [messageApi, contextHolder] = message.useMessage();
 
   let paramid = useParams();
   let productid = paramid.productid;
+  const navigate = useNavigate();
 
 
   let fetchFoodDetail = () => {
@@ -64,6 +66,7 @@ function ProductDetail() {
         })
         .then((res) => {
           setListProductNotPage(res.data.content);
+          
         })
         .catch((error) => {
           
@@ -115,11 +118,10 @@ function ProductDetail() {
     setCount(1);
   }
   const dispatch = useDispatch(); // Lấy hàm dispatch
-
+  let id = localStorage.getItem("id");
   const [selectedItem, setSelectedItem] = useState();
-
   let addToCart = (item) => {
- 
+  if(id){
     storeRedux.dispatch(actionAddToCart({
       id: item.id,
       image: item.imageUrl,
@@ -128,7 +130,15 @@ function ProductDetail() {
       quantity: count,
       price: selectedPrice
     }));
-  };
+    navigate("/cart")
+  }else{
+        messageApi.open({
+          type: 'success',
+          content: 'Vui lòng đăng nhập',
+          
+        });
+  }
+};
   //listProduct
 
   //----------------Item productReview--------------------
@@ -143,6 +153,11 @@ let addNewReview=()=>{
   dispatch(actionAddProductReviewAPI(itemProductReview));
   setRatingz("");
   setTextReview("");
+  messageApi.open({
+    type: 'success',
+    content: 'Cảm ơn bạn đã đánh giá cho sản phẩm',
+
+  });
 }
 
  //----------------End Item productReview--------------------
@@ -202,7 +217,7 @@ let addNewReview=()=>{
 
 
   return (
-    <>
+    <>{contextHolder}
       <section className="pt-5 trasua">
         <Container>
           <Row>
@@ -270,7 +285,7 @@ let addNewReview=()=>{
                   <button className="buy_btn" onClick={() => addToCart(product)} >
                     <i class="ri-shopping-cart-line"></i> Thêm vào Giỏ Hàng
                   </button>
-                  <Link to="/cart"><button className="buy_btn_mua" onClick={() => addToCart(product)}>
+                  <Link><button className="buy_btn_mua" onClick={() => addToCart(product)}>
                     Mua Ngay
                   </button></Link>
                 </div>
