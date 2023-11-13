@@ -17,7 +17,6 @@ function ResultFormProductPreview(props) {
   let currentPage = useSelector((state) => state.productpreview.currentPage);
   let pageSizeAPI = useSelector((state) => state.productpreview.pageSize);
   let total = useSelector((state) => state.productpreview.total);
-  let [totalElement,setTotalElements]=useState('');
   //Message
   let [messageApi, contextHolder] = message.useMessage();
 
@@ -49,28 +48,6 @@ function ResultFormProductPreview(props) {
     setDataSource(listProductPreview);
   }, [listProductPreview]);
 
-  useEffect(() => {
-    
-    let fetchProductList = () => {
-      axios
-        .get("http://localhost:8080/api/v1/ProductReviews", {
-          headers: {
-            
-            "content-type": "application/json",
-          },
-        })
-        .then((res) => {
-          setTotalElements(res.data.totalElements);
-        })
-        .catch((error) => {
-          
-          console.error('Error fetching product list: ', error);
-        });
-    };
-   
-    dispatch(actionFetchProductReviewAPI(page, pageSize));
-    fetchProductList(); 
-  }, [dispatch,page, pageSize]);
   //--------End useEffect---------
 
   //Function
@@ -174,7 +151,7 @@ function ResultFormProductPreview(props) {
       <Table columns={columns} dataSource={filteredDataSource}
         pagination={{
           pageSize: pageSizeAPI,
-          total: totalElement,
+          total: totalPages * pageSizeAPI,
           onChange: handlePageChange,
           showSizeChanger: false,
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,

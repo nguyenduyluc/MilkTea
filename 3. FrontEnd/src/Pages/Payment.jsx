@@ -31,11 +31,11 @@ function Payment() {
     COD: 'COD',
     BANKING: 'BANKING'
   };
-  let [selectedPaymentType, setSelectedPaymentType] = useState("COD");
+  let [selectedPaymentType, setSelectedPaymentType] = useState("");
   let totalAmount = useSelector((state) => state.addToCart.totalAmount);
   //Lấy Id của người dùng đăng nhập vào
   let accountId = localStorage.getItem("id");
-console.log(accountId);
+
   // lấy id order
   let [order, setOrder] = useState([]);
   //tạo fetch lấy API của order
@@ -53,6 +53,7 @@ console.log(accountId);
           },
         })
       setListOrderNoPage(data.content);
+    
       return data.content
     } catch (error) {
       console.error('Error fetching product list: ', error);
@@ -148,15 +149,14 @@ console.log(accountId);
     try {
       //  addNewOrder();
       dispatch(actionAddNewOrderAPI(accountId));
-      const listOrder =  await fetchOrderList()
+      const listOrder = await fetchOrderList()
       // if (listOrder.length > 0) {
         let lastOrderId = listOrder[listOrder.length - 1].id;
         setOrder(lastOrderId);
       // }
-
       // Once the order is created, use the obtained order ID
       // let newOrderID = order;
- 
+
       // Prepare data for OrderDetail
       let ItemNewOrderDetail = cartAddItem.map((item) => {
         return {
@@ -167,7 +167,6 @@ console.log(accountId);
           unitPrice: item.totalPrice,
         };
       });
-
       // Dispatch action to add order details
        dispatch(actionAddNewOrderDetailAPI(ItemNewOrderDetail));
 
@@ -186,11 +185,6 @@ console.log(accountId);
       // Dispatch action to add payment
         dispatch(actionAddPAYMENTAPI(ItemNewPayment));
       dispatch(actionDeleteAllList());
-      setName("");
-      setAddress("");
-      setPhoneNumber("");
-      setEmail("");
-      setBankNumber("")
     } catch (error) {
       console.error('Error handling payment: ', error);
     }
@@ -229,8 +223,8 @@ console.log(accountId);
           <FormGroup>
             <select name="" id="" value={selectedPaymentType} onChange={(e) => setSelectedPaymentType(e.target.value)}>
               {/* <option value="All">Lựa Chọn Thanh Toán</option> */}
-              <option value={PaymentTypes.COD}>COD</option>
-              <option value={PaymentTypes.BANKING}>Chuyển Khoản</option>
+              <option value={"COD"}>COD</option>
+              <option value={"BANKING"}>Chuyển Khoản</option>
             </select>
           </FormGroup>
           <br />

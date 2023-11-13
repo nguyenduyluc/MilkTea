@@ -24,7 +24,6 @@ function ResultFormOrder(props) {
   let [totalPage, setTotalPage] = useState(1);
   let [searchedText, setSearchedText] = useState("");
   let [messageApi, contextHolder] = message.useMessage();
-  let [totalElement,setTotalElements]=useState('');
 
   //----------End Declare ----------
 
@@ -41,29 +40,6 @@ function ResultFormOrder(props) {
     setDataSource(listOrderDetailsAPI);
   }, [listOrderDetailsAPI]);
 
-  useEffect(() => {
-    
-    let fetchProductList = () => {
-      axios
-        .get("http://localhost:8080/api/v1/Orderdetails", {
-          headers: {
-            
-            "content-type": "application/json",
-          },
-        })
-        .then((res) => {
-          setTotalElements(res.data.totalElements);
-        })
-        .catch((error) => {
-          
-          console.error('Error fetching product list: ', error);
-        });
-    };
-   
-    dispatch(actionFetchListOrderDetailsAPI(page, pageSize));
-    fetchProductList(); 
-  }, [dispatch,page, pageSize]);
-console.log(totalElement);
   //--------End useEffect---------
 
   //Function
@@ -175,7 +151,7 @@ console.log(totalElement);
           )}
           pagination={{
             pageSize: pageSizeAPI,
-            total: totalElement,
+            total: totalPages * pageSizeAPI,
             onChange: handlePageChange,
             showSizeChanger: false,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
